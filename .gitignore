@@ -1,0 +1,17 @@
+/bin/
+/dist/
+/build/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+/pkg/
+.env
+.env.*
+
+.DS_Store
+Thumbs.db
