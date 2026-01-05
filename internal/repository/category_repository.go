@@ -22,3 +22,23 @@ func GetAllCategorY() ([]models.Category, error) {
 
 	return  categories, result.Error
 }
+
+func GetCategoryById(id uint) (models.Category, error) {
+	var category models.Category
+
+	result := database.DB.First(&category, id)
+
+	return  category, result.Error
+}
+
+func UpdateCategory(id uint, newName string) error {
+	result := database.DB.Model(&models.Category{}).Where("id = ?", id).Update("category_name", newName)
+
+	return  result.Error
+}
+
+func DeleteCategory(id uint) error {
+	result := database.DB.Delete(&models.Category{}, id)
+
+	return  result.Error
+}
