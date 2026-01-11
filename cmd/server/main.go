@@ -2,9 +2,10 @@ package main
 
 import (
 	"ecovantory/internal/database"
-	"ecovantory/internal/repository"
+	"ecovantory/internal/routes"
 	"fmt"
 	"log"
+	"net/http"
 )
 
 func main() {
@@ -12,10 +13,13 @@ func main() {
 
 	database.InitDB()
 
-	category, err := repository.GetCategoryById(1)
-	if err != nil {
-		log.Fatal(err)
-	}
+	router := routes.SetupRoutes()
 
-	fmt.Println("Kategori: ", &category)
+	port := ":8080"
+	fmt.Printf("The server is running on http://localhost%s\n", port)
+
+	err := http.ListenAndServe(port, router)
+	if err != nil {
+		log.Fatal("Failed running server: ", err)
+	}
 }
