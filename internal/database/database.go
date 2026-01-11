@@ -7,7 +7,7 @@ import (
 	"log"
 )
 
-var DB *gorm.DB
+var DB *gorm.DB	
 
 func InitDB() {
 	var err error
