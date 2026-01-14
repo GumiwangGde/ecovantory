@@ -14,5 +14,8 @@ func SetupRoutes() *http.ServeMux {
 	mux.HandleFunc("/items", handlers.ItemHandler)
 	mux.HandleFunc("/item", handlers.ItemDetailHandler)
 
+	mux.HandleFunc("/units", handlers.UnitHandler)
+	mux.HandleFunc("/unit", handlers.UnitDetailHandler)
+
 	return mux
 }
