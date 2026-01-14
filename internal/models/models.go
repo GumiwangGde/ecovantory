@@ -23,8 +23,8 @@ type User struct {
 
 type Item struct {
 	ID uint `gorm:"primaryKey" json:"item_id"`
-	UnitId uint `json:"unit_id"`
-	Unit Unit `gorm:"foreignKey:UnitId" json:"unit"`
+	UnitID uint `json:"unit_id"`
+	Unit Unit `gorm:"foreignKey:UnitID" json:"unit"`
 	ItemCode string `json:"item_code"`
 	ItemName string `json:"item_name"`
 	Description string `json:"description"`
@@ -36,7 +36,7 @@ type Item struct {
 
 type ItemCategory struct {
 	ID uint `gorm:"primaryKey" json:"item_category_id"`
-	ItemId uint `json:"item_id"`
+	ItemID uint `json:"item_id"`
 	CategoryId uint `json:"category_id"`
 	BaseModel
 }
@@ -55,8 +55,8 @@ type Unit struct {
 
 type Stock struct {
 	ID uint `gorm:"primaryKey" json:"stock_id"`
-	ItemId uint `json:"item_id"`
-	Item Item `gorm:"foreignKey:ItemId" json:"item"`
+	ItemID uint `json:"item_id"`
+	Item Item `gorm:"foreignKey:ItemID" json:"item"`
 	PhysicalStatus string `json:"physical_status"`
 	PositionStatus int `json:"position_status"`
 	Quantity int `json:"quantity"`
@@ -67,8 +67,8 @@ type StockMutations struct {
 	ID uint `gorm:"primaryKey" json:"stock_mutations_id"`
 	TransactionId uint `json:"transaction_id"`
 	Transaction Transaction `gorm:"foreignKey:TransactionId" json:"transaction"`
-	ItemId uint `json:"item_id"`
-	Item Item `gorm:"foreignKey:ItemId" json:"item"`
+	ItemID uint `json:"item_id"`
+	Item Item `gorm:"foreignKey:ItemID" json:"item"`
 	MutationType string `json:"mutation_type"`
 	Quantity int `json:"quantity"`
 	BalanceAfter int `json:"balance_after"`
@@ -77,8 +77,8 @@ type StockMutations struct {
 
 type Transaction struct {
 	ID uint `gorm:"primaryKey" json:"transaction_id"`
-	UserId uint `json:"user_id"`
-	User User `gorm:"foreignKey" json:"user"`
+	UserID uint `json:"user_id"`
+	User User `gorm:"foreignKey:UserID" json:"user"`
 	Invoice string `json:"invoice"`
 	TotalPrice float64 `json:"total_price"`
 	BaseModel
@@ -87,8 +87,8 @@ type Transaction struct {
 type TransactionDetail struct {
 	ID uint `gorm:"primaryKey" json:"transaction_detail_id"`
 	TransactionId uint `json:"transaction_id"`
-	ItemId uint `json:"item_id"`
-	Item Item `gorm:"foreignKey:ItemId" json:"item"`
+	ItemID uint `json:"item_id"`
+	Item Item `gorm:"foreignKey:ItemID" json:"item"`
 	Quantity int `json:"quantity"`
 	SellPrice float64 `json:"sell_price"`
 	SubTotal float64 `json:"sub_total"`
@@ -97,8 +97,9 @@ type TransactionDetail struct {
 
 type Log struct {
 	ID uint `gorm:"primaryKey" json:"log_id"`
-	UserId uint `json:"user_id"`
+	UserID uint `json:"user_id"`
 	TransactionId uint `json:"transaction_id"`
 	Action string `json:"action"`
+	User User `gorm:"foreignKey:UserID" json:"user"`
 	BaseModel
 }

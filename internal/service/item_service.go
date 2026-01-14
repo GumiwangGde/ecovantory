@@ -31,10 +31,6 @@ func GetAllItemsService() ([]models.Item, error) {
 		return nil, err
 	}
 
-	if len(items) == 0 {
-		return nil, errors.New("item not found")
-	}
-
 	return items, nil
 }
 
@@ -67,7 +63,7 @@ func UpdateItemService(id uint, updatedData *models.Item, categoryIDs []uint) er
 	item.BasePrice = updatedData.BasePrice
 	item.SellPrice = updatedData.SellPrice
 	item.Description = updatedData.Description
-	item.UnitId = updatedData.UnitId
+	item.UnitID = updatedData.UnitID
 	item.Categories = newCategories
 
 	return  repository.UpdateItem(&item)

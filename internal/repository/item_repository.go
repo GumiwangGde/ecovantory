@@ -12,7 +12,7 @@ func CreateItem(item *models.Item) error {
 
 func GetAllItems() ([]models.Item, error) {
 	var items []models.Item
-	result := database.DB.Preload("Category").Preload("Unit").Find(&items)
+	result := database.DB.Preload("Unit").Preload("Categories").Find(&items)
 	return  items, result.Error
 }
 

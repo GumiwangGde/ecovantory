@@ -42,7 +42,7 @@ func ItemHandler(w http.ResponseWriter, r *http.Request) {
 				Description: input.Description,
 				BasePrice:   input.BasePrice,
 				SellPrice:   input.SellPrice,
-				UnitId:      input.UnitId,
+				UnitID:      input.UnitId,
 			}
 
 			err = service.CreateItemService(&newItem, input.CategoryIds)
@@ -97,7 +97,7 @@ func ItemDetailHandler(w http.ResponseWriter, r *http.Request) {
 				Description: input.Description,
 				BasePrice:   input.BasePrice,
 				SellPrice:   input.SellPrice,
-				UnitId:      input.UnitId,
+				UnitID:      input.UnitId,
 			}
 
 			err = service.UpdateItemService(uint(id), &updatedData, input.CategoryIds)
