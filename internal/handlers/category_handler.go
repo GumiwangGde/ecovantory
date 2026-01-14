@@ -68,7 +68,11 @@ func CategoryDetailHandler(w http.ResponseWriter, r *http.Request) {
 			var input struct {
 				Name string `json:"name"`
 			}
-			json.NewDecoder(r.Body).Decode(&input)
+			err := json.NewDecoder(r.Body).Decode(&input)
+			if err != nil {
+				http.Error(w, "json format invalid", http.StatusInternalServerError)
+				return
+			}
 
 			err = service.UpdateCategoryService(uint(id), input.Name)
 			if err != nil {

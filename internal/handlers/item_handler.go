@@ -30,7 +30,8 @@ func ItemHandler(w http.ResponseWriter, r *http.Request) {
 				CategoryIds []uint  `json:"category_ids"`
 			}
 
-			if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
+			err := json.NewDecoder(r.Body).Decode(&input)
+			if err != nil {
 				http.Error(w, "input invalid", http.StatusBadRequest)
 				return
 			}
@@ -44,8 +45,8 @@ func ItemHandler(w http.ResponseWriter, r *http.Request) {
 				UnitId:      input.UnitId,
 			}
 
-			if err := service.CreateItemService(&newItem, input.CategoryIds)
-			err != nil {
+			err = service.CreateItemService(&newItem, input.CategoryIds)
+			if err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 				return
 			}
@@ -84,7 +85,11 @@ func ItemDetailHandler(w http.ResponseWriter, r *http.Request) {
 				CategoryIds []uint  `json:"category_ids"`
 			}
 
-			json.NewDecoder(r.Body).Decode(&input)
+			err := json.NewDecoder(r.Body).Decode(&input)
+			if err != nil {
+				http.Error(w, "json format invalid", http.StatusBadRequest)
+				return
+			}
 
 			updatedData := models.Item{
 				ItemName:    input.ItemName,
@@ -95,8 +100,8 @@ func ItemDetailHandler(w http.ResponseWriter, r *http.Request) {
 				UnitId:      input.UnitId,
 			}
 
-			if err := service.UpdateItemService(uint(id), &updatedData, input.CategoryIds)
-			err != nil {
+			err = service.UpdateItemService(uint(id), &updatedData, input.CategoryIds)
+			if err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 				return
 			}
@@ -104,8 +109,8 @@ func ItemDetailHandler(w http.ResponseWriter, r *http.Request) {
 			json.NewEncoder(w).Encode(map[string]string{"message": "item updated"})
 
 		case http.MethodDelete:
-			if err:= service.DeleteItemService(uint(id))
-			err != nil {
+			err:= service.DeleteItemService(uint(id))
+			if err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 				return
 			}
