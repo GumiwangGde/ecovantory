@@ -5,7 +5,7 @@ import (
 	"ecovantory/internal/models"
 )
 
-func CreateItem(item *models.Category) error {
+func CreateItem(item *models.Item) error {
 	result := database.DB.Create(item)
 	return result.Error 
 }
