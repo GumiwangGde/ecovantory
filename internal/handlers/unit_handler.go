@@ -7,84 +7,79 @@ import (
 	"strconv"
 )
 
-func CategoriesHandler(w http.ResponseWriter, r *http.Request) {
+func UnitHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 		case http.MethodGet:
-			categories, err := service.GetAllCategoriesService()
+			units, err := service.GetAllUnitService()
 			if err != nil {
-				http.Error(w, err.Error(), http.StatusInternalServerError)
-				return
+				http.Error(w, err.Error(), http.StatusNotFound)
 			}
 
 			w.Header().Set("Content-Type", "application/json")
-			json.NewEncoder(w).Encode(categories)
+			json.NewEncoder(w).Encode(units)
 
 		case http.MethodPost:
 			var input struct {
-				Name string `json:"category_name"`
+				Name string `json:"unit_name"`
 			}
 
 			err := json.NewDecoder(r.Body).Decode(&input)
 			if err != nil {
-				http.Error(w, "Invalid json format", http.StatusBadRequest)
-				return
+				http.Error(w, "invalid json format", http.StatusBadRequest)
 			}
 
-			err = service.CreateCategoryService(input.Name)
+			err = service.CreateUnitService(input.Name)
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
-				return
 			}
 
 			w.WriteHeader(http.StatusCreated)
-			json.NewEncoder(w).Encode(map[string]string{"message": "category created"})
+			json.NewEncoder(w).Encode(map[string]string{"message": "unit created"})
 
 		default:
 			http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
 	}
 }
 
-func CategoryDetailHandler(w http.ResponseWriter, r *http.Request) {
+func UnitDetailHandler(w http.ResponseWriter, r *http.Request) {
 	idStr := r.URL.Query().Get("id")
 
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
 		http.Error(w, "ID must be a number", http.StatusBadRequest)
-		return
 	}
 
 	switch r.Method {
-		case http.MethodGet: 
-			category, err := service.GetCategoryByIDService(uint(id))
+		case http.MethodGet:
+			unit, err := service.GetUnitByIdService(uint(id))
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusNotFound)
-				return
 			}
 
 			w.Header().Set("Content-Type", "application/json")
-			json.NewEncoder(w).Encode(category)
+			json.NewEncoder(w).Encode(unit)
 
 		case http.MethodPut:
 			var input struct {
-				Name string `json:"category_name"`
+				Name string `json:"unit_name"`
 			}
 
 			err := json.NewDecoder(r.Body).Decode(&input)
 			if err != nil {
-				http.Error(w, "json format invalid", http.StatusInternalServerError)
+				http.Error(w, "format json invalid", http.StatusBadRequest)
 				return
 			}
 
-			err = service.UpdateCategoryService(uint(id), input.Name)
+			err = service.UpdateUnitService(uint(id), input.Name)
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 				return
 			}
 
-			json.NewEncoder(w).Encode(map[string]string{"message": "category updated"})
+			json.NewEncoder(w).Encode(map[string]string{"message": "unit updated"})
 
 		case http.MethodDelete:
-			err := service.DeleteCategoryService(uint(id))
+			err := service.DeleteUnitService(uint(id))
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 				return
@@ -92,9 +87,9 @@ func CategoryDetailHandler(w http.ResponseWriter, r *http.Request) {
 
 			w.WriteHeader(http.StatusOK)
 			w.Header().Set("Content-Type", "application/json")
-			json.NewEncoder(w).Encode(map[string]string{"message": "category deleted"})
+			json.NewEncoder(w).Encode(map[string]string{"message": "unit deleted"})
 
 		default:
-			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+			http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
 	}
 }

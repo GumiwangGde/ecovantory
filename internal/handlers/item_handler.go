@@ -115,6 +115,11 @@ func ItemDetailHandler(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 
+			w.WriteHeader(http.StatusOK)
+			w.Header().Set("Content-Type", "application/json")
 			json.NewEncoder(w).Encode(map[string]string{"message": "item deleted"})
+
+		default:
+			http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
 	}
 }
